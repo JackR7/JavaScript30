@@ -59,8 +59,25 @@
 
 <script>
 
+function playSound(e) {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+  if(!audio) { return null;} // return null if is chosen a key different from the list
+  audio.currentTime = 0; // let the audio clickable various time 
+  //restarting it (without waiting more than 2 seconds to play)
+  audio.play();
+  key.classList.add('playing');
+}    
+
+function removeTransformTransition(e){
+  if(e.propertyName !== "transform"){ return null;} // skip if event is not tranform
+  this.classList.remove('playing');
+}
+
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('transitionend', removeTransformTransition));
+window.addEventListener('keydown', playSound);
+
 </script>
-
-
 </body>
 </html>
